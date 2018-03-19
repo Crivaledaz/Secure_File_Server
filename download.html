@@ -1,0 +1,143 @@
+<!--
+ * Download page to decrypt file and save on user computer 
+ *
+ * @author Denis CLAVIER <clavierd at gmail dot com>
+-->
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Download : Get your File !</title>
+
+		<!-- Include script SJCL, jquery and bootstrap -->
+		<script src="sjcl.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	</head>
+
+	<body>
+		<!-- HTML code to render the button and the bootstrap -->
+		<div id="main div" class="w3-margin w3-padding-large">
+			<h2>Click on the button below to save the file on your computer ! </h2>
+		
+				<div id="link" class="w3-button w3-teal">
+					<div id="saveLink"></div> <!-- div to print the link -->
+		
+				</div>
+				</br>	
+		</div>
+	
+		<!-- JavaScript code to get data, cipher and request the server -->
+		<script>
+			
+		    /**
+		    * @param string @param
+		    * A parameter name to extract from the page url. 
+		    * 
+		    * @return 
+		    * The value (string) associated to "param" in the page url.
+		    */
+			function getParam(param)
+			{
+				var vars = {};
+				window.location.href.replace( location.hash, '' ).replace(/[?&]+([^=&]+)=?([^&]*)?/gi, function( m, key, value ) { vars[key] = value !== undefined ? value : '';} );
+
+				if (param) 
+				{
+					return vars[param] ? vars[param] : null;	
+				}
+				return vars;
+			}
+
+		    /**
+		    * @param string @file
+		    * The encrypted file (in string format) to decrypt
+		    * @param string @keyB64
+		    * The base 64 of the key to decrypt (had to be the good key to process) 
+		    * 
+		    * @return 
+		    * A string array with 2 elements : the plaintext file (if key is the good one) and the original name of the file
+		    */
+			function decryptFile(file,keyB64)
+			{
+				//Convert the key from base 64 to Bits
+				var key = sjcl.codec.base64.toBits(keyB64);
+
+				//Decrypt the file with the provided key 
+				var decrypt = sjcl.decrypt(key,file);
+				
+				//Parse the decrypted string to get name and file separately
+				var obj = JSON.parse(decrypt)
+				
+				return [obj.data,obj.name];
+			}
+
+			/**
+		    * Get the file and the key from url, decrypt file and generate a link to save the decrypted file
+		    */
+			function downloadProcess()
+			{
+				//Get the file id from the url
+				var filepathRaw = getParam('file');
+
+				//Exception raises if there is no file id in url
+				if (filepathRaw == null)
+				{
+					var error = "Error : File parameter is missing";
+					$('#saveLink').append(error);
+					throw "Error : File parameter is missing";
+				}
+
+				//Escape and validate the file id parameter in order to prevent attack (code injection, path traversal, remote/local file inclusion)
+				var tmpFilepath = filepathRaw.replace("/", "")
+				tmpFilepath = tmpFilepath.replace(".", "")
+
+				//The file id should be an integer, if it is not a number, raise an exception
+				var fileRequested = parseInt(tmpFilepath);
+				if (isNaN(fileRequested))
+				{
+					var error = "Error : File parameter is missing or not accepted"
+					$('#saveLink').append(error);
+					throw "Error : File parameter is missing or not accepted";
+				}
+
+				//Get the key in the url's hash section (#xxxxxxxxx) or throw an error if url does not containt hash
+				if(window.location.hash) 
+				{
+	  				var keyFrag = window.location.hash.substring(1);
+				} 
+				else 
+				{
+					var error = "Error : Encrypt Key is missing"
+					$('#saveLink').append(error);
+	  				throw "Error : Encrypt key is missing";
+				}
+
+				//Get the file from the server with a Get request
+				var getFile = new XMLHttpRequest();
+				getFile.open('GET', '/' + fileRequested.toString());
+				
+				//When encrypted file is collected, decrypt the file and create the link to allow user to save it on his computer
+				getFile.addEventListener('load', function() {
+	  				var decrypt = decryptFile(getFile.response,keyFrag);
+	  				var downloadLink = '<a download="'+ decrypt[1] +'" href="' + decrypt[0] +'"> Save </a>'
+					$('#saveLink').append(downloadLink);
+				}, false);
+
+				//Send the GET request
+				getFile.send();
+			}
+
+			//Initialisation function
+			function init()
+			{
+				//launch the download process
+				downloadProcess();
+			}
+		
+			//Start initialisation process when the user load the page 		
+			$(init);
+
+		</script>
+	</body>
+</html>
