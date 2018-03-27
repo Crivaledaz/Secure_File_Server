@@ -1,0 +1,12 @@
+{
+  "recaptchaPrivate" : "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+  "recaptchaPublic" : "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+
+  "httpsKey" : "./key.pem",
+  "httpsCert" : "./cert.pem",
+
+  "portHTTP" : 80,
+  "portHTTPS" : 443,
+
+  "storageFolder" : "files/"
+}

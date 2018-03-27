@@ -12,8 +12,8 @@ const forceSSL = require('express-force-ssl');
 const fileUpload = require('express-fileupload');
 const Recaptcha = require('express-recaptcha');
 
-//Include project data
-var keys = require('./env.js');
+//Include configuration file
+var config = require('./config.json');
 
 //Create an Express app
 const app = express()
@@ -21,15 +21,15 @@ app.use(fileUpload())
 
 //HTTPS Configuration
 https.createServer({
-	key: fs.readFileSync('key.pem'),
-  	cert: fs.readFileSync('cert.pem')
-}, app).listen(443);
+	key: fs.readFileSync(config.httpsKey),
+  	cert: fs.readFileSync(config.httpsCert)
+}, app).listen(config.portHTTPS);
 
 //ReCaptchaV2 configuration
-var recaptcha = new Recaptcha('6Ld3G0wUAAAAAJaDxTPcxLOaFPJJL9ymPgA-VtCo', keys.recaptchaKey);
+var recaptcha = new Recaptcha(config.recaptchaPublic, config.recaptchaPrivate);
 
 //Dafault page loaded
-app.get('/', function (req, res) {
+app.get('/', forceSSL, function (req, res) {
 	res.sendFile(__dirname+'/upload.html')
 })
 
@@ -61,7 +61,7 @@ app.post('/upload.html', function(req, res) {
 	  		const fileName = Date.now() + Math.trunc(Math.random()*100);
 	  
 	  		// Use the mv() method to place the file in the file directory	
-	 		uploadedFile.mv('files/' + fileName, function(err) {
+	 		uploadedFile.mv(config.storageFolder + fileName, function(err) {
 	    		//If error occur during save process, raise a server error
 	    		if (err){
 	      			return res.status(500).send(err);
@@ -90,6 +90,6 @@ app.get('/:id([0-9]{13}$)$', function (req, res) {
 })
 
 //Start the server on the port 80
-app.listen(80, function () {
-	console.log('Example app listening on port 80!')
+app.listen(config.portHTTP, function () {
+	console.log('Secure File Server is listening on port ' + config.portHTTP + ' !')
 })

@@ -1,6 +1,6 @@
 {
   "name": "package.json",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Secure File Server : client side encryption",
   "main": "index.js",
   "scripts": {
@@ -8,6 +8,7 @@
   },
   "keywords": [
     "file",
+	"Secure",
     "server"
   ],
   "author": "Denis CLAVIER",

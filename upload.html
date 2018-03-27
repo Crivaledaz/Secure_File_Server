@@ -15,7 +15,6 @@
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 		
 		<!-- Recaptcha API and secret key for captcha module -->
-		<script src="./app.js"></script>
 		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 	</head>
@@ -29,7 +28,7 @@
 			</br>
 
 			<!-- Captcha module to avoid robot and DOS -->
-			<div class="g-recaptcha" data-sitekey="6Ld3G0wUAAAAAJaDxTPcxLOaFPJJL9ymPgA-VtCo"></div>
+			<div class="g-recaptcha" data-sitekey="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"></div>
 			<br/>
 
 			<!-- Submit button to start the upload process -->
@@ -73,9 +72,6 @@
 		    */
 			function uploadProcess()
 			{
-				//Base url (DNS name) to create the share link
-				var hostname = "localhost";
-
 				//Alert thrown if no file has been selected
 				if( document.getElementById("file").files.length == 0 ){
 	    			alert('No file selected');
@@ -123,7 +119,7 @@
 								const fileID = xhr.responseText;
 
 								//Create the share link with the file id and the key 
-								var link = 'http://'+ hostname +'/download.html?file=' + fileID + '#' + crypt[1];
+								var link = 'http://'+ window.location.hostname +'/download.html?file=' + fileID + '#' + crypt[1];
 
 								//Print the share link
 								var message = 'Share this link with your friends : <a href=' + link + '>' + link + '</a>';
