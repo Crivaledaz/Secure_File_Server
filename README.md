@@ -35,6 +35,9 @@ Install required packages :
 ```
 #Install nodejs and npm which are in EPEL (git and openssl are optional)
 sudo yum -y --nogpgcheck install npm nodejs git openssl
+
+#To install Epel repository :
+sudo yum -y --nogpgcheck install epel-release
 ```
 * For Debian, ubuntu, Mint :
 ```
@@ -55,7 +58,7 @@ cd /opt/Secure_File_Server/
 
 There is a package.json in the repository, you just need to run npm with and it will install Secure_File_Server and required dependencies
 ```
-npm install package.json
+npm install
 ```
 
 Beside you can install dependencies by hand (could be skipped using npm and the project package.json)
