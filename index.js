@@ -86,10 +86,10 @@ app.get('/download.html', function (req, res) {
 
 //Check file id format and return the requested file
 app.get('/:id([0-9]{13}$)$', function (req, res) {
-	res.sendFile(__dirname+'/files/'+ req.params.id)
+	res.sendFile(__dirname+'/' + config.storageFolder + req.params.id)
 })
 
 //Start the server on the port 80
 app.listen(config.portHTTP, function () {
-	console.log('Secure File Server is listening on port ' + config.portHTTP + ' !')
+	console.log('Secure File Server is listening on port ' + config.portHTTP + ' and ' + config.portHTTPS + ' !')
 })

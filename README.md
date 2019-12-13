@@ -33,11 +33,11 @@ Install required packages :
 
 * For Centos 7, RHEL 7 and Fedora :
 ```
-#Install nodejs and npm which are in EPEL (git and openssl are optional)
-sudo yum -y --nogpgcheck install npm nodejs git openssl
-
 #To install Epel repository :
 sudo yum -y --nogpgcheck install epel-release
+
+#Install nodejs and npm which are in EPEL (git and openssl are optional)
+sudo yum -y --nogpgcheck install npm nodejs git openssl
 ```
 * For Debian, ubuntu, Mint :
 ```
@@ -47,8 +47,8 @@ sudo apt-get -y install nodejs npm git openssl
 
 Your system is ready to install and run Secure File Server.
 
-
 ## Install
+
 Clone (or download and extract) this repository in the directory of your choice (assume that is /opt) :
 ```
 cd /opt
@@ -77,7 +77,6 @@ mkdir /opt/Secure_File_Server/files/
 
 Secure_File_Server is now installed and just need some configuration.
 
-
 ## Configuration
 
 The server configuration is gathered in the config.json file. You can change the listening port, and you need to add recaptcha keys. You can also modify the path of your HTTPS certificate. 
@@ -95,14 +94,14 @@ HTTPS protocol needs certificates to work. So you need to generate a pair of cer
 
 ```
 # Generate the private key
-openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 
+openssl req -x509 -nodes -newkey rsa:2048 -keyout Secure_File_Server/key.pem -out Secure_File_Server/cert.pem
 ```
 
 This command creates an RSA 2048 key and the associate certificate. Put these files in the folder you have chosen in the config.js https section. Our certificates are untrusted by common browser because no certification authority have signed it. That's the reason why a warning appears on your browser and you must add an exception for your certificate. You can also use Let's encrypt to sign your certificate and prevent browser warning.
 
 * Port
 
-By default, the Secure File Server listens on port 80, but you can change this and choose another not used port. 
+By default, the Secure File Server listens on port 80, but you can change this and choose another not used port.
 
 ## Usage
 You only need to run the index.js with nodeJS :
@@ -110,7 +109,9 @@ You only need to run the index.js with nodeJS :
 node index.js
 ```
 
-The prompt should print : "Secure File Server listenning on port 80". Well, your server is runnng, try to upload some files to check. To do that, go in your browser and type : http://YOUR_HOSTNAME/
+The prompt should print : "Secure File Server listenning on port 80".
+
+Well, your server is runnng, try to upload some files to check. To do that, go in your browser and type : https://localhost/
 
 ## Limitation
 This module has been tested on Centos 7, Kali and Ubuntu.
