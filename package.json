@@ -8,15 +8,15 @@
   },
   "keywords": [
     "file",
-	"Secure",
+	  "Secure",
     "server"
   ],
   "author": "Denis CLAVIER",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.16.2",
+    "express": "^4.17.1",
     "express-fileupload": "^0.4.0",
     "express-force-ssl": "^0.3.2",
-    "express-recaptcha": "^3.0.1"
+    "express-recaptcha": "^5.0.1"
   }
 }
