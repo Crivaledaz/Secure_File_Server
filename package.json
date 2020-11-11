@@ -1,6 +1,6 @@
 {
   "name": "package.json",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Secure File Server : client side encryption",
   "main": "index.js",
   "scripts": {
@@ -8,15 +8,15 @@
   },
   "keywords": [
     "file",
-	  "Secure",
+    "Secure",
     "server"
   ],
   "author": "Denis CLAVIER",
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
-    "express-fileupload": "^0.4.0",
+    "express-fileupload": "^1.2.0",
     "express-force-ssl": "^0.3.2",
-    "express-recaptcha": "^5.0.1"
+    "express-recaptcha": "^5.0.2"
   }
 }
